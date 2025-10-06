@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <h1 class="text-center mb-4 text-primary">{{ page_title }}</h1>
+            <p class="lead text-muted text-center">Trouvez rapidement les réponses aux questions les plus fréquentes concernant l'utilisation de Loverx.</p>
+
+            {# Utilisation du composant Accordion de Bootstrap #}
+            <div class="accordion accordion-flush mt-5" id="faqAccordion">
+                {% for item in faq_items %}
+                <div class="accordion-item shadow-sm mb-3 border">
+                    <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+                            {{ item.q }}
+                        </button>
+                    </h2>
+                    <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            {{ item.a }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <p class="text-center text-muted mt-5">
+                Vous n'avez pas trouvé votre réponse ? Contactez-nous via la <a href="{% url 'pages:contact' %}" class="text-danger fw-bold">page de Contact</a>.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

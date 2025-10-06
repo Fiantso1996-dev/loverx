@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}À Propos de Loverx{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h1 class="display-4 text-center text-danger mb-4">Notre Mission</h1>
+        <p class="lead text-center mb-5">
+            Chez **Loverx**, nous croyons que l'amour ne devrait pas être un jeu de hasard. Notre mission est de créer des connexions sincères et durables basées sur la compatibilité et le respect mutuel.
+        </p>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="card-title text-primary">Notre Histoire</h2>
+                <p>
+                    Lancé en 2025, Loverx est né du désir d'offrir une plateforme de rencontre plus humaine et sécurisée. Nous avons construit notre plateforme avec les dernières technologies **Django** pour garantir une expérience rapide, stable, et surtout, fiable.
+                </p>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="card-title text-primary">Nos Valeurs</h2>
+                <ul>
+                    <li><strong class="text-danger">Sincérité :</strong> Des profils détaillés pour des rencontres authentiques.</li>
+                    <li><strong class="text-danger">Sécurité :</strong> Modération active et confidentialité des données.</li>
+                    <li><strong class="text-danger">Simplicité :</strong> Une interface utilisateur intuitive pour une navigation agréable.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{% url 'accounts:register' %}" class="btn btn-danger btn-lg">
+                Rejoignez Loverx et trouvez votre partenaire
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

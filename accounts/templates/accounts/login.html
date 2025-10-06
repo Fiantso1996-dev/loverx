@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Connexion - Loverx{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-lg p-4 mt-5">
+            <div class="card-body">
+                <h1 class="card-title text-center text-primary mb-4 fw-bold">Se connecter à Loverx</h1>
+                <p class="text-center text-muted">Utilisez votre email et votre mot de passe pour accéder à votre compte.</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            
+                            {{ field|add_class:"form-control" }}
+                            
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger mt-1 p-2">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    
+                    {% if next %}
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    {% endif %}
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Connexion</button>
+                    </div>
+                </form>
+
+                <hr>
+
+                <p class="text-center mt-3">
+                    <a href="{% url 'accounts:password_reset_start' %}" class="text-secondary">Mot de passe oublié ?</a>
+                </p>
+                <p class="text-center">
+                    Pas encore membre ? <a href="{% url 'accounts:register' %}" class="text-danger fw-bold">Inscrivez-vous</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

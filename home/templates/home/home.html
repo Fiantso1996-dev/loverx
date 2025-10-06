@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Loverx - Trouvez votre âme sœur{% endblock %}
+
+{% block content %}
+
+<header class="p-5 mb-4 bg-danger text-white rounded-3 shadow-lg" >
+    <div class="container-fluid py-5 bg-dark bg-opacity-50 p-4 rounded-3">
+        <h1 class="display-5 fw-bold text-center">Bienvenue sur Loverx ! ❤️</h1>
+        <p class="fs-4 text-center">Découvrez, connectez-vous et trouvez la personne qui vous correspond vraiment.</p>
+        
+        <div class="text-center mt-4">
+            {% if user.is_authenticated %}
+                <a class="btn btn-warning btn-lg me-3" href="{% url 'profiles:profile_list' %}">
+                    <i class="bi bi-search"></i> Voir les Membres
+                </a>
+                <a class="btn btn-outline-light btn-lg" href="{% url 'profiles:profile_edit' %}">
+                    <i class="bi bi-person-fill-gear"></i> Compléter mon Profil
+                </a>
+            {% else %}
+                <a class="btn btn-warning btn-lg me-3" href="{% url 'accounts:register' %}">
+                    <i class="bi bi-person-plus-fill"></i> S'inscrire Gratuitement
+                </a>
+                <a class="btn btn-outline-light btn-lg" href="{% url 'accounts:login' %}">
+                    <i class="bi bi-box-arrow-in-right"></i> Connexion
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<section class="row text-center my-5">
+    <h2 class="mb-4 text-danger fw-bold">Pourquoi choisir Loverx ?</h2>
+    
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm p-3">
+            <i class="bi bi-search h1 text-primary"></i>
+            <div class="card-body">
+                <h5 class="card-title">Recherche Avancée</h5>
+                <p class="card-text">Trouvez des profils selon l'âge, la ville ou la description pour des correspondances précises.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm p-3">
+            <i class="bi bi-chat-dots-fill h1 text-success"></i>
+            <div class="card-body">
+                <h5 class="card-title">Chat Instantané</h5>
+                <p class="card-text">Communiquez en temps réel avec les membres qui vous intéressent, en toute sécurité.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm p-3">
+            <i class="bi bi-person-check-fill h1 text-danger"></i>
+            <div class="card-body">
+                <h5 class="card-title">Profils Vérifiés</h5>
+                <p class="card-text">Des profils complets pour vous donner toutes les informations avant de commencer à discuter.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="my-5 p-4 bg-light rounded-3">
+    <div class="row text-center">
+        <h2 class="mb-4 text-secondary">Notre Communauté en Chiffres</h2>
+        <div class="col-md-4">
+            <p class="display-4 fw-bold text-danger">{{ nbr_user }}+</p>
+            <p class="lead">Membres Actifs</p>
+        </div>
+        <div class="col-md-4">
+            <p class="display-4 fw-bold text-danger">{{ nbr_mois }}+</p>
+            <p class="lead">Nouvelles Inscriptions/Mois</p>
+        </div>
+        <div class="col-md-4">
+            <p class="display-4 fw-bold text-danger">100%</p>
+            <p class="lead">Confidentialité Assurée</p>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

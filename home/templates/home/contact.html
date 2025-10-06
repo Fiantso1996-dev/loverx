@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <h1 class="text-center mb-4 text-primary">{{ page_title }}</h1>
+            <p class="lead text-muted text-center">Vous avez des questions, des suggestions ou besoin d'assistance ? N'hésitez pas à nous contacter !</p>
+
+            <div class="card shadow-lg p-4 mt-5">
+                <div class="card-body">
+                    <h2 class="h4 text-danger mb-3">Nous Contacter</h2>
+                    <form method="post" action="#"> {# Remplacez '#' par l'URL de votre vue de traitement de formulaire #}
+                        {% csrf_token %}
+                        
+                        {# Ici, vous mettriez votre formulaire Django si vous en aviez un #}
+                        {# Par exemple: {{ contact_form.as_p }} #}
+
+                        <div class="mb-3">
+                            <label for="id_name" class="form-label">Votre Nom</label>
+                            <input type="text" name="nom" id="id_name" class="form-control" placeholder="Entrez votre nom" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">Votre Email</label>
+                            <input type="email" name="email" id="id_email" class="form-control" placeholder="Entrez votre adresse email" required>
+                        </div>
+                        <div class="mb-3"> 
+                            <label for="id_subject" class="form-label">Sujet</label>
+                            <input type="text" name="sujet" id="id_subject" class="form-control" placeholder="Sujet de votre message" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_message" class="form-label">Votre Message</label>
+                            <textarea name="message" id="id_message" class="form-control" rows="5" placeholder="Écrivez votre message ici..." required></textarea>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-danger btn-lg">Envoyer le Message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <section class="mt-5 text-center">
+                <h3 class="h5 text-primary mb-3">Autres Moyens de Contact</h3>
+                <p>Vous pouvez également nous joindre directement :</p>
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-envelope-fill me-2"></i> Email: <a href="mailto:support@loverx.com" class="text-danger fw-bold">support@loverx.com</a></li>
+                    <li><i class="bi bi-telephone-fill me-2"></i> Téléphone: +1 (555) 123-4567</li>
+                    <li><i class="bi bi-geo-alt-fill me-2"></i> Adresse: 123 Rue de l'Amour, Ville du Cœur, Pays</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

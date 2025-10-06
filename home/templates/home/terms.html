@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <h1 class="text-center mb-4 text-primary">{{ page_title }}</h1>
+            <p class="lead text-muted text-center">Bienvenue sur Loverx ! En utilisant nos services, vous acceptez les présentes conditions.</p>
+
+            <section class="mt-5">
+                <h2 class="h4 text-danger mb-3">1. Acceptation des Conditions</h2>
+                <p>En accédant et en utilisant les services de Loverx (le "Service"), vous acceptez d'être lié par les présentes Conditions d'Utilisation. Si vous n'acceptez pas toutes les conditions de cet accord, vous ne pouvez pas accéder au Service ni l'utiliser.</p>
+            </section>
+
+            <section class="mt-4">
+                <h2 class="h4 text-danger mb-3">2. Modifications des Conditions</h2>
+                <p>Nous nous réservons le droit, à notre seule discrétion, de modifier ou de remplacer ces Conditions à tout moment. Si une révision est substantielle, nous essaierons de fournir un préavis d'au moins 30 jours avant que les nouvelles conditions n'entrent en vigueur. Ce qui constitue un changement substantiel sera déterminé à notre seule discrétion.</p>
+            </section>
+
+            <section class="mt-4">
+                <h2 class="h4 text-danger mb-3">3. Comptes Utilisateurs</h2>
+                <ul>
+                    <li>Vous devez avoir au moins 18 ans pour créer un compte.</li>
+                    <li>Vous êtes responsable de la confidentialité de votre compte et de votre mot de passe et de la restriction de l'accès à votre ordinateur.</li>
+                    <li>Toute activité se produisant sous votre compte est sous votre responsabilité.</li>
+                </ul>
+            </section>
+            
+            <section class="mt-4">
+                <h2 class="h4 text-danger mb-3">4. Conduite de l'Utilisateur</h2>
+                <p>Vous vous engagez à ne pas utiliser le Service pour des activités illégales ou interdites, y compris, mais sans s'y limiter, le spam, le harcèlement, la diffusion de contenu haineux ou la violation des droits d'autrui.</p>
+            </section>
+            
+            <section class="mt-4">
+                <h2 class="h4 text-danger mb-3">5. Résiliation</h2>
+                <p>Nous pouvons résilier ou suspendre votre compte immédiatement, sans préavis ni responsabilité, pour quelque raison que ce soit, y compris, sans s'y limiter, si vous violez les Conditions.</p>
+            </section>
+
+            <section class="mt-4">
+                <h2 class="h4 text-danger mb-3">6. Contact</h2>
+                <p>Pour toute question concernant ces Conditions, veuillez nous contacter via notre <a href="{% url 'pages:contact' %}" class="text-danger fw-bold">page de contact</a>.</p>
+            </section>
+
+            <p class="text-center text-muted mt-5"><em>Dernière mise à jour : 06 Octobre 2025</em></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

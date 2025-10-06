@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Messagerie - Discussions{% endblock %}
+
+{% block content %}
+
+<h1 class="text-success fw-bold mb-4">Mes Discussions</h1>
+<p class="text-muted">Reprenez vos conversations où vous les avez laissées.</p>
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-lg">
+            <ul class="list-group list-group-flush">
+                
+                {% if contacts %}
+                    {% for contact_profile in contacts %}
+                        <li class="list-group-item list-group-item-action d-flex align-items-center p-3">
+                            
+                            <img src="{{ contact_profile.image.url }}" 
+                                 alt="Photo de {{ contact_profile.prenom }}" 
+                                 class="rounded-circle me-3" 
+                                 style="width: 50px; height: 50px; object-fit: cover;">
+                            
+                            <div class="flex-grow-1">
+                                <h5 class="mb-0 text-dark fw-bold">
+                                    {{ contact_profile.prenom }}
+                                </h5>
+                                
+                                <p class="text-muted small mb-0">
+                                    {% if contact_profile.last_message %}
+                                        <i class="bi bi-chat-left-text me-1"></i>
+                                        {{ contact_profile.last_message|truncatechars:40 }}
+                                    {% else %}
+                                        Nouvelle conversation.
+                                    {% endif %}
+                                </p>
+                            </div>
+                            
+                            {% if contact_profile.unread_count > 0 %}
+                                <span class="badge bg-danger rounded-pill me-3">{{ contact_profile.unread_count }}</span>
+                            {% endif %}
+                            
+                            <a href="{% url 'chat:chat_room' user_id=contact_profile.utilisateur.pk %}" class="btn btn-sm btn-success">
+                                <i class="bi bi-arrow-right-circle-fill"></i> Ouvrir
+                            </a>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="list-group-item text-center py-4">
+                        <i class="bi bi-info-circle-fill text-info me-2"></i>
+                        Vous n'avez pas encore de conversations. 
+                        <a href="{% url 'profiles:profile_list' %}" class="text-danger fw-bold">Commencez une discussion !</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}  {% block title %}Inscription - Loverx{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-lg p-4 mt-5">
+            <div class="card-body">
+                <h1 class="card-title text-center text-danger mb-4 fw-bold">Rejoindre Loverx</h1>
+                <p class="text-center text-muted">Créez votre compte gratuitement pour commencer à trouver votre match.</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                            
+                            {{ field|add_class:"form-control" }}
+                            
+                            {% if field.help_text %}
+                                <div class="form-text text-muted">{{ field.help_text|safe }}</div>
+                            {% endif %}
+                            
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger mt-1 p-2">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-danger btn-lg">S'inscrire</button>
+                    </div>
+                </form>
+
+                <hr>
+
+                <p class="text-center mt-3">
+                    Vous avez déjà un compte ? <a href="{% url 'accounts:login' %}" class="text-danger fw-bold">Connectez-vous ici</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

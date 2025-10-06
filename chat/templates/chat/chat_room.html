@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Chat avec {{ other_user_profile.prenom|default:'Membre' }}{% endblock %}
+
+{% block extra_head %}
+    <style>
+        /* Style simple pour la zone de chat */
+        .chat-container {
+            height: 65vh; /* Hauteur de la zone de messages */
+            overflow-y: scroll;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #f8f9fa;
+        }
+        .message {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+        .sent {
+            background-color: #dc3545; /* Rouge Loverx */
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 0;
+        }
+        .received {
+            background-color: #e9ecef;
+            color: #343a40;
+            margin-right: auto;
+            border-bottom-left-radius: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+<h1 class="text-success fw-bold mb-4">
+    Conversation avec 
+    <a href="{% url 'profiles:profile_detail' pk=other_user_profile.pk %}" class="text-danger">
+        {{ other_user_profile.prenom|default:'Membre' }}
+    </a>
+</h1>
+
+<div class="card shadow-lg">
+    <div class="card-body p-0">
+        
+        <div class="chat-container" id="chat-messages">
+            
+            {% for message in messages %}
+                    {% if message.expediteur == user %}
+                        <div class="message sent shadow-sm" data-message-id="{{ message.pk }}">  <small class="d-block text-white-50 text-end">{{ message.date_envoi|date:"H:i" }}</small>
+                            <p class="mb-0">{{ message.contenu }}</p>
+                        </div>
+                    {% else %}
+                        <div class="message received shadow-sm" data-message-id="{{ message.pk }}"> <small class="d-block text-muted text-start">{{ message.date_envoi|date:"H:i" }}</small>
+                            <p class="mb-0">{{ message.contenu }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+        </div>
+        <div class="p-3 border-top">
+            <form id="message-form" method="post" action="{% url 'chat:chat_room' user_id=other_user_profile.utilisateur.pk %}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" 
+                           class="form-control" 
+                           placeholder="Écrivez votre message..." 
+                           name="contenu" 
+                           aria-label="Contenu du message" 
+                           required>
+                           
+                    <input type="hidden" name="destinataire" value="{{ other_user_profile.utilisateur.pk }}">
+                           
+                    <button class="btn btn-danger" type="submit">Envoyer <i class="bi bi-send-fill"></i></button>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+</div>
+
+{% endblock content %}
+
+{% comment %}
+    
+
+    
+{% block extra_js %}
+<script>
+    // Fait défiler automatiquement vers le bas lorsque la page charge
+    document.addEventListener('DOMContentLoaded', function() {
+        var container = document.getElementById('chat-messages');
+        container.scrollTop = container.scrollHeight;
+    });
+
+    // NOTE: Pour le temps réel (real-time chat), vous devriez implémenter 
+    // Django Channels (WebSockets) au lieu d'une simple soumission de formulaire POST.
+</script>
+{% endblock %}
+
+{% endcomment %}
+
+{% block extra_js %}
+<script>
+    const chatContainer = document.getElementById('chat-messages');
+    const userId = {{ other_user_profile.utilisateur.pk }};
+    const newMessagesUrl = "{% url 'chat:get_new_messages' user_id=other_user_profile.utilisateur.pk %}";
+
+    // Fonction pour faire défiler jusqu'au dernier message
+    function scrollToBottom() {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // 1. Défilement initial
+    document.addEventListener('DOMContentLoaded', scrollToBottom);
+
+    // Fonction pour obtenir l'ID du dernier message affiché dans le DOM
+    function getLastMessageId() {
+        const lastMessage = chatContainer.querySelector('.message:last-child');
+        return lastMessage ? lastMessage.dataset.messageId : 0;
+    }
+
+    // Fonction pour rendre et ajouter un message au conteneur
+    function renderMessage(message) {
+        const isSent = message.is_sent_by_me;
+        const messageClass = isSent ? 'sent' : 'received';
+        const alignClass = isSent ? 'text-end' : 'text-start';
+        const timeColor = isSent ? 'text-white-50' : 'text-muted';
+
+        const messageHTML = `
+            <div class="message ${messageClass} shadow-sm" data-message-id="${message.id}">
+                <small class="d-block ${timeColor} ${alignClass}">${message.date_envoi}</small>
+                <p class="mb-0">${message.contenu}</p>
+            </div>
+        `;
+        chatContainer.insertAdjacentHTML('beforeend', messageHTML);
+    }
+
+    // 2. Fonction de Polling (appel régulier au serveur)
+    function fetchNewMessages() {
+        const lastId = getLastMessageId();
+
+        // Utilisation de Fetch API pour la requête AJAX
+        fetch(`${newMessagesUrl}?last_message_id=${lastId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.messages && data.messages.length > 0) {
+                    const shouldScroll = chatContainer.scrollTop + chatContainer.clientHeight >= chatContainer.scrollHeight;
+
+                    data.messages.forEach(message => {
+                        renderMessage(message);
+                    });
+
+                    // Si l'utilisateur était en bas, faites défiler vers le nouveau message
+                    if (shouldScroll) {
+                        scrollToBottom();
+                    }
+                }
+            })
+            .catch(error => console.error('Erreur lors de la récupération des messages:', error));
+    }
+
+    // 3. Démarrer l'interrogation toutes les 3 secondes
+    setInterval(fetchNewMessages, 3000); // 3000 ms = 3 secondes
+</script>
+
+{% endblock %}

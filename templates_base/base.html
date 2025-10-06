@@ -1,0 +1,185 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>{% block title %}Loverx - Site de Rencontre{% endblock %}</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+          rel="stylesheet" 
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+          crossorigin="anonymous">
+          
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+          
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+    
+    {% block extra_head %}{% endblock %}
+
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-danger shadow-lg sticky-top">
+        <div class="container">
+            
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'pages:accueil' %}">
+                <!-- <img src="{% static 'image/logo.jpg' %}" alt="Loverx Logo" height="30" class="me-2 rounded-circle border border-2 border-light"> -->
+                <span class="fw-bold text-white fs-4">Lover<span class="text-warning">x</span></span> </a>    
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% comment %}
+                      
+                   
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'pages:a_propos' %}">
+                            <i class="bi bi-info-circle me-1"></i> À Propos
+                        </a>
+                    </li>
+                    
+                     {% endcomment %}
+                     
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link text-warning fw-medium" href="{% url 'profiles:profile_list' %}">
+                            <i class="bi bi-heart-fill me-1"></i> Trouver Membre
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light fw-medium" href="{% url 'chat:chat_list' %}">
+                            <i class="bi bi-chat-dots-fill me-1"></i> Messagerie
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle fs-5 me-1"></i> Bonjour, {{ user.profile.prenom|default:user.email }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="{% url 'profiles:profile_detail' pk=user.profile.pk %}">Mon Profil</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form action="{% url 'accounts:logout' %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="bi bi-box-arrow-right me-1"></i> Déconnexion
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item me-2">
+                            <a class="btn btn-outline-light" href="{% url 'accounts:login' %}">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Connexion
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-warning fw-bold" href="{% url 'accounts:register' %}">
+                                <i class="bi bi-person-plus-fill me-1"></i> S'inscrire Gratuitement
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="container mt-4 mb-5 flex-grow-1">
+        {% comment %}  
+        {% if messages %}
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        {% endcomment %}
+        {% block content %}
+        
+        
+        {% endblock %}
+        
+    </main>
+
+<footer class="footer bg-dark pt-5 pb-3 border-top border-secondary">
+    <div class="container">
+        <div class="row text-center text-lg-start">
+
+            <div class="col-12 col-lg-4 mb-4 mb-lg-0">
+                <a href="{% url 'pages:accueil' %}" class="text-decoration-none">
+                    <span class="fw-bold text-white fs-4">Lover<span class="text-warning">x</span></span>
+                </a>
+                <p class="text-muted mt-2 mb-3 small">Connecter les cœurs depuis 2025. Trouvez votre partenaire idéal aujourd'hui.</p>
+                <div class="social-links mt-3">
+                    <a href="#" class="text-white me-3 opacity-75 hover-opacity-100" aria-label="Facebook"><i class="fab fa-facebook-f fa-lg"></i></a>
+                    <a href="#" class="text-white me-3 opacity-75 hover-opacity-100" aria-label="Twitter"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="text-white me-3 opacity-75 hover-opacity-100" aria-label="Instagram"><i class="fab fa-instagram fa-lg"></i></a>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-2">
+                <nav>
+                    <h6 class="text-white text-uppercase mb-3 fw-bold">Navigation</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'pages:accueil' %}" class="text-decoration-none text-light opacity-75 small">Accueil</a></li>
+                        <li class="mb-2"><a href="{% url 'pages:a_propos' %}" class="text-decoration-none text-light opacity-75 small">À Propos</a></li>
+                        {% if user.is_authenticated %}
+                        <li class="mb-2"><a href="{% url 'profiles:profile_list' %}" class="text-decoration-none text-light opacity-75 small">Trouver Membre</a></li>
+                        {% endif %}
+                        <li class="mb-2"><a href="{% url 'pages:contact' %}" class="text-decoration-none text-light opacity-75 small">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-6 col-md-4 col-lg-3">
+                <nav>
+                    <h6 class="text-white text-uppercase mb-3 fw-bold">Légal & Aide</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'pages:terms' %}" class="text-decoration-none text-light opacity-75 small">Conditions d'Utilisation</a></li>
+                        <li class="mb-2"><a href="{% url 'pages:privacy' %}" class="text-decoration-none text-light opacity-75 small">Politique de Confidentialité</a></li>
+                        <li class="mb-2"><a href="{% url 'pages:faq' %}" class="text-decoration-none text-light opacity-75 small">FAQ</a></li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <div class="col-12 col-md-4 col-lg-3 mt-4 mt-md-0 d-flex flex-column justify-content-start align-items-lg-start align-items-center">
+                <h6 class="text-white text-uppercase mb-3 fw-bold">Prêt à Aimer ?</h6>
+                <a href="{% url 'accounts:login' %}" class="btn btn-warning btn-sm fw-bold">Rejoignez-nous!</a>
+            </div>
+
+        </div>
+
+        <hr class="text-light opacity-25 mt-4 mb-3">
+
+        <div class="row">
+            <div class="col-12 text-center pb-2">
+                <span class="text-muted small">&copy; 2025 Loverx. Tous droits réservés. Construit avec <i class="fas fa-heart text-danger small"></i>.</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+            crossorigin="anonymous"></script>
+            
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>

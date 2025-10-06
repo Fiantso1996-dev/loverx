@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <h1 class="text-center mb-4 text-primary">{{ page_title }}</h1>
+            <p class="lead text-muted text-center">Votre vie privée est notre priorité. Découvrez comment Loverx protège vos données.</p>
+
+            <section class="mt-5">
+                <h2 class="h4 text-danger mb-3">1. Informations que nous collectons</h2>
+                <p>Nous recueillons différents types d'informations pour fournir et améliorer notre Service, notamment :</p>
+                <ul>
+                    <li><strong>Informations personnelles identifiables :</strong> nom, adresse e-mail, date de naissance, sexe, photo de profil, préférences de recherche.</li>
+                    <li><strong>Données d'utilisation :</strong> comment vous accédez et utilisez le Service (par exemple, adresses IP, type de navigateur, pages visitées).</li>
+                    <li><strong>Informations de localisation :</strong> avec votre consentement, pour des fonctionnalités de correspondance géolocalisée.</li>
+                </ul>
+            </section>
+
+            <section class="mt-4">
+                <h2 class="h4 text-danger mb-3">2. Comment nous utilisons vos informations</h2>
+                <p>Nous utilisons les informations collectées pour diverses finalités :</p>
+                <ul>
+                    <li>Fournir et maintenir notre Service.</li>
+                    <li>Gérer votre compte et personnaliser votre expérience.</li>
+                    <li>Vous envoyer des notifications (matchs, messages, mises à jour de service).</li>
+                    <li>Améliorer, personnaliser et étendre notre Service.</li>
+                    <li>Détecter, prévenir et résoudre les problèmes techniques.</li>
+                </ul>
+            </section>
+
+            <section class="mt-4">
+                <h2 class="h4 text-danger mb-3">3. Partage et divulgation des informations</h2>
+                <p>Nous ne vendons, n'échangeons ni ne louons vos informations personnelles identifiables à des tiers. Nous pouvons partager vos informations avec des fournisseurs de services de confiance pour nous aider à faire fonctionner notre site Web, à mener nos activités ou à vous servir, à condition que ces parties acceptent de garder ces informations confidentielles.</p>
+            </section>
+            
+            <section class="mt-4">
+                <h2 class="h4 text-danger mb-3">4. Sécurité des données</h2>
+                <p>La sécurité de vos données est importante pour nous, mais n'oubliez pas qu'aucune méthode de transmission sur Internet ou méthode de stockage électronique n'est 100 % sécurisée. Bien que nous nous efforcions d'utiliser des moyens commercialement acceptables pour protéger vos données personnelles, nous ne pouvons garantir leur sécurité absolue.</p>
+            </section>
+
+            <section class="mt-4">
+                <h2 class="h4 text-danger mb-3">5. Vos droits</h2>
+                <p>Vous avez le droit d'accéder, de rectifier, de supprimer ou de limiter le traitement de vos données personnelles. Pour exercer ces droits, veuillez nous contacter.</p>
+            </section>
+
+            <p class="text-center text-muted mt-5"><em>Dernière mise à jour : 06 Octobre 2025</em></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

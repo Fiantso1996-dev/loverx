@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profil de {{ profile.prenom }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-lg p-4 mt-4">
+            
+            <div class="row g-0">
+                
+                <div class="col-md-4 text-center border-end">
+                    
+                    <img src="{{ profile.image.url }}" 
+                         class="img-fluid rounded-circle border border-5 border-danger shadow-sm mb-3" 
+                         alt="Photo de {{ profile.prenom }}" 
+                         style="width: 200px; height: 200px; object-fit: cover;">
+                         
+                    <h2 class="text-danger fw-bold">{{ profile.prenom }} {{ profile.nom|slice:":1" }}.</h2>
+                    <p class="lead text-muted">{{ profile.age|default:'Âge non spécifié' }} ans</p>
+
+                    <div class="mt-4 p-3 bg-light rounded">
+                        {% if profile.utilisateur == user %}
+                            <a href="{% url 'profiles:profile_edit' %}" class="btn btn-warning btn-lg w-100 mb-2">
+                                <i class="bi bi-pencil-square"></i> Modifier mon Profil
+                            </a>
+                           <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-secondary w-100">Déconnexion</button>
+                            </form>
+                            <p class="text-center mt-3">
+                                <a href="{% url 'accounts:password_reset_start' %}" class="btn btn-outline-danger w-100">Changer le mot de passe</a>
+                            </p>
+                        {% else %}
+                            <a href="{% url 'chat:chat_room' user_id=profile.utilisateur.pk %}" class="btn btn-success btn-lg w-100 mb-2">
+                                <i class="bi bi-chat-dots-fill"></i> Démarrer la Discussion
+                            </a>
+                            <a href="{% url 'profiles:profile_list' %}" class="btn btn-outline-primary w-100">
+                                Retourner aux Membres
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-md-8 p-4">
+                    
+                    <h3 class="text-primary mb-3">Ma Description</h3>
+                    {% if profile.description %}
+                        <p class="mb-4">{{ profile.description|linebreaksbr }}</p>
+                    {% else %}
+                        <p class="text-muted fst-italic">Ce membre n'a pas encore rédigé de description.</p>
+                    {% endif %}
+
+                    <hr>
+
+                    <h3 class="text-primary mb-3 mt-4">Détails Personnels</h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="bi bi-envelope-fill text-danger me-2"></i> 
+                            <strong>Email :</strong> {{ profile.utilisateur.email }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-geo-alt-fill text-danger me-2"></i> 
+                            <strong>Adresse :</strong> {{ profile.adresse|default:'Non renseigné' }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-telephone-fill text-danger me-2"></i> 
+                            <strong>Téléphone :</strong> {{ profile.telephone|default:'Non renseigné' }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-card-heading text-danger me-2"></i> 
+                            <strong>CIN :</strong> {{ profile.cin|default:'Non renseigné' }}
+                            {% if profile.utilisateur == user %}
+                                <span class="badge bg-secondary ms-2">Visible uniquement par vous</span>
+                            {% endif %}
+                        </li>
+                        
+                    </ul>
+                    
+                    <small class="d-block text-end mt-4 text-muted">Membre depuis le {{ profile.utilisateur.date_joined|date:"d M Y" }}</small>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock content %}
